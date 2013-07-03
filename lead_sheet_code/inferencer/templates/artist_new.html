@@ -1,0 +1,11 @@
+<h1>Add Artist</h1>
+
+<form action="{% url "artist_new" %}" method="POST">
+  {% csrf_token %}
+  <ul>
+    {{ form.as_ul }}
+  </ul>
+  <input type="submit" value="Save" />
+</form>
+
+<a href="{% url "artist_list" %}">back to list</a>

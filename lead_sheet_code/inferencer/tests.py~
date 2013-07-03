@@ -1,0 +1,33 @@
+"""
+This file demonstrates writing tests using the unittest module. These will pass
+when you run "manage.py test".
+
+Replace this with more appropriate tests for your application.
+"""
+
+from django.test import TestCase
+
+
+class WordTests(TestCase):
+    # What kind of tests do I need to make when adding words?
+    
+    # make sure the word name:
+    # Doesn't have spaces
+    # Check any markdown/potential problems with characters in 
+    # databases (POSTGRES stuff)
+
+class ArtistTests(TestCase):
+    # What kind of limits on artist variables should I consider?
+    # (Look up typical testing procedures)
+    
+    # Make sure Artist name
+    # Doesn't PREVENT spaces
+    # 
+
+class GenreTests(TestCase):
+
+class TopicTests(TestCase):
+
+class TrackTests(TestCase):
+    
+
