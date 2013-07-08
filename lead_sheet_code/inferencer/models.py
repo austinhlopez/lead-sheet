@@ -31,6 +31,7 @@ class Topic(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(
         max_length=255,
+        unique=True
     ) #Note: name can be added after the fact
 
     top_words = models.ManyToManyField(
@@ -172,6 +173,9 @@ class Track(models.Model):
         blank=True,
         null=True,
         )
+
+    class Meta:
+        unique_together = ("name", "artist")
     
     def __unicode__(self):
         return self.name
@@ -185,6 +189,9 @@ class TopicWord(models.Model):
     # a certain number, ensure there are no redundant positions 
     # for a given topic
 
+    class Meta:
+        unique_together = (("topic", "word"), ("topic", "position"))
+
 class TrackTopic(models.Model):
     track = models.ForeignKey(Track)
     topic = models.ForeignKey(Topic)
@@ -195,6 +202,8 @@ class TrackTopic(models.Model):
         verbose_name='What percentage of the overall topic makeup is comprised by this topic?',
         )
     
+    class Meta:
+        unique_together = ("track", "topic")
     #Todo: make sure that the sum of topic distributions is < 1?
 
 class ArtistTopic(models.Model):
@@ -207,6 +216,8 @@ class ArtistTopic(models.Model):
         verbose_name='What percentage of the overall topic makeup is comprised by this topic?',
         )
     
+    class Meta:
+        unique_together = ("artist", "topic")
 
 class TrackGenre(models.Model):
     track = models.ForeignKey(Track)
@@ -216,6 +227,9 @@ class TrackGenre(models.Model):
         verbose_name="Is this the primary genre listing?",
         )
 
+    class Meta:
+        unique_together = ("track", "genre")
+
 class ArtistGenre(models.Model):
     artist = models.ForeignKey(Artist)
     genre = models.ForeignKey(Genre)
@@ -223,3 +237,6 @@ class ArtistGenre(models.Model):
     genre_position = models.IntegerField(
         verbose_name="Is this the primary genre listing?",
         )
+
+    class Meta:
+        unique_together = ("artist", "genre")

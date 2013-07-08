@@ -33,7 +33,7 @@ from inferencer.models import Word, Genre, Topic, Artist, Track
 
 # These tests only make sure that ListWordView correctly
 # lists all of the words that have been added thus far.
-class WordListTests(TestCase):
+class ListWordViewTests(TestCase):
     """Word list view tests"""
     # What kind of tests do I need to make when adding words?
     
