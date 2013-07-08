@@ -1,7 +1,11 @@
-<h1>Artist</h1>
+<h1>Artists</h1>
 
 <ul>
   {% for artist in object_list %}
-  <li>{{ artist }}</li>
+  <li>{{ artist }}
+    (<a href="{% url "artist_edit" pk=artist.id %}">edit</a>)
+  </li>
   {% endfor %}
 </ul>
+
+<a href="{% url "artist_new" %}">add artist</a>

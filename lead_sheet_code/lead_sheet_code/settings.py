@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     
     # additional installed apps
     'south',
+    'rest_framework',
 )
 
 # A sample logging configuration. The only tangible logging

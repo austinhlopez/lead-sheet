@@ -2,6 +2,11 @@
 
 <ul>
   {% for track in object_list %}
-  <li>{{ track }}</li>
+  <li>{{ track }}
+    (<a href="{% url "track_edit" pk=track.id %}">edit</a>)
+  </li>
   {% endfor %}
+  
 </ul>
+
+<a href="{% url "track_new" %}">add track</a>

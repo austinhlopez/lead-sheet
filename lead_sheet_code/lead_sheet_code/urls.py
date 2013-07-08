@@ -19,6 +19,7 @@ urlpatterns = patterns(
     # url(r'^admin/', include(admin.site.urls)),
 
     # List url's
+
     url(r'^word_list$', inferencer.views.ListWordView.as_view(),
         name='word_list',),
     url(r'^artist_list$', inferencer.views.ListArtistView.as_view(),
@@ -35,4 +36,7 @@ urlpatterns = patterns(
         name='artist_new',),
     url(r'^track_new$', inferencer.views.CreateTrackView.as_view(),
         name='track_new',),
+
+    url(r'^artist_edit/(?P<pk>\d+)/$', inferencer.views.UpdateArtistView.as_view(), name='artist_edit',),
+    url(r'^track_edit/(?P<pk>\d+)/$', inferencer.views.UpdateTrackView.as_view(), name='track_edit',),
 )

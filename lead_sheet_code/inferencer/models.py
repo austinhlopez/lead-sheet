@@ -143,7 +143,7 @@ class Track(models.Model):
         null=True,
         )
     
-    '''genre = models.ManyToManyField(
+    '''genres = models.ManyToManyField(
         Genre,
         through='TrackGenre',
         blank=True,
