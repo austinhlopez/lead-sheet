@@ -1,96 +1,68 @@
 # Create your views here.
-
-from django.views.generic import ListView
-from django.views.generic import UpdateView
-
-from django.core.urlresolvers import reverse
-from django.views.generic import CreateView
-
 from inferencer.models import Word, Artist, Genre, Topic, Track
+from inferencer.serializers import ArtistSerializer, TrackSerializer, WordSerializer, GenreSerializer, TopicSerializer
+from rest_framework import generics
 
-from inferencer.serializers import ArtistSerializer, TrackSerializer
 
 ######## Word Views #########
 
-class ListWordView(ListView):
-    model = Word
-    template_name = 'word_list.html'
+class WordList(generics.ListCreateAPIView):
+    """ 
+    List all words, or create new word.
+    """
+    queryset = Word.objects.all()
+    serializer_class = WordSerializer
+
+    # get and post methods pre-written in ListCreateAPIView
 
 ######## Artist Views #########
 
-class ListArtistView(ListView):
-    model = Artist
-    template_name = 'artist_list.html'
+class ArtistList(generics.ListCreateAPIView):
+    """
+    List all Artists, or create a new artist.
+    """
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
 
-class CreateArtistView(CreateView):
-    model = Artist
-    template_name = 'artist_edit.html'
+class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete an artist instance.
+    """
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
 
-    # On success, redirect the user here:
-    def get_success_url(self):
-        return reverse('artist_list')
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateArtistView, self).get_context_data(**kwargs)
-        context['action'] = reverse('artist_new')
-
-        return context
-
-class UpdateArtistView(UpdateView):
-    model = Artist
-    template_name = 'artist_edit.html'
-
-    def get_success_url(self):
-        return reverse('artist_list')
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateArtistView, self).get_context_data(**kwargs)
-        context['action'] = reverse('artist_edit',
-                                    kwargs={'pk' : self.get_object().id})
-
-        return context
+    #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
 ######## Genre Views #########
 
-class ListGenreView(ListView):
-    model = Genre
-    template_name = 'genre_list.html'
+class GenreList(generics.ListCreateAPIView):
+    """
+    List all Genres, or create a new genre.
+    """
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
 
 ######## Topic Views #########
 
-class ListTopicView(ListView):
-    model = Topic
-    template_name = 'topic_list.html'
+class TopicList(generics.ListCreateAPIView):
+    """
+    List all Topics, or create a new topic.
+    """
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
 
 ######## Track Views #########
 
-class ListTrackView(ListView):
-    model = Track
-    template_name = 'track_list.html'
+class TrackList(generics.ListCreateAPIView):
+    """
+    List all Tracks, or create a new track.
+    """
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
 
-class CreateTrackView(CreateView):
-    model = Track
-    template_name = 'track_edit.html'
-
-    # On success, redirect the user here:
-    def get_success_url(self):
-        return reverse('track_list')
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateTrackView, self).get_context_data(**kwargs)
-        context['action'] = reverse('track_new')
-
-        return context
-
-class UpdateTrackView(UpdateView):
-    model = Track
-    template_name = 'track_edit.html'
-
-    def get_success_url(self):
-        return reverse('track_list')
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateTrackView, self).get_context_data(**kwargs)
-        context['action'] = reverse('track_edit',
-                                    kwargs={'pk' : self.get_object().id})
-
-        return context
+class TrackDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete an artist instance.
+    """
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view

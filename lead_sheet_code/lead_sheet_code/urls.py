@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
-
-import inferencer.views
+from inferencer import views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -19,24 +18,15 @@ urlpatterns = patterns(
     # url(r'^admin/', include(admin.site.urls)),
 
     # List url's
+    url(r'^words/$', views.WordList.as_view()),
+    
+    url(r'^artists/$', views.ArtistList.as_view()),
+    url(r'^artists/(?P<pk>[0-9]+)/$', views.ArtistDetail.as_view()),
 
-    url(r'^word_list$', inferencer.views.ListWordView.as_view(),
-        name='word_list',),
-    url(r'^artist_list$', inferencer.views.ListArtistView.as_view(),
-        name='artist_list',),
-    url(r'^genre_list$', inferencer.views.ListGenreView.as_view(),
-        name='genre_list',),
-    url(r'^topic_list$', inferencer.views.ListTopicView.as_view(),
-        name='topic_list',),
-    url(r'^track_list$', inferencer.views.ListTrackView.as_view(),
-        name='track_list',),
+    url(r'^genres/$', views.GenreList.as_view()),
 
-    # Create data url's
-    url(r'^artist_new$', inferencer.views.CreateArtistView.as_view(),
-        name='artist_new',),
-    url(r'^track_new$', inferencer.views.CreateTrackView.as_view(),
-        name='track_new',),
+    url(r'^topics/$', views.TopicList.as_view()),
 
-    url(r'^artist_edit/(?P<pk>\d+)/$', inferencer.views.UpdateArtistView.as_view(), name='artist_edit',),
-    url(r'^track_edit/(?P<pk>\d+)/$', inferencer.views.UpdateTrackView.as_view(), name='track_edit',),
+    url(r'tracks/$', views.TrackList.as_view()),
+    url(r'^tracks/(?P<pk>[0-9]+)/$', views.TrackDetail.as_view()),
 )
