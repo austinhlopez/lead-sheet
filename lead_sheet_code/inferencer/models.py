@@ -6,7 +6,7 @@ class Word(models.Model):
         unique=True,
         max_length=60,
         )
-
+    
     count = models.IntegerField(
         verbose_name="Total count of this word within the dataset.",
         )
@@ -33,12 +33,12 @@ class Topic(models.Model):
         max_length=255,
     ) #Note: name can be added after the fact
 
-    '''top_words = models.ManyToManyField(
+    top_words = models.ManyToManyField(
         Word, 
-        verbose_name="List of the top 100 words for a given topic",
+        verbose_name="List of the top words for a given topic",
         through='TopicWord',
-        ) # Make sure to restrict to 100 topics in the business logic.
-'''
+        )
+
     def __unicode__(self):
         return self.name
 
@@ -84,7 +84,7 @@ class Artist(models.Model):
         blank=True,
         )
     
-    '''genres = models.ManyToManyField(
+    genres = models.ManyToManyField(
         Genre,
         through='ArtistGenre',
         null=True,
@@ -97,7 +97,7 @@ class Artist(models.Model):
         through = 'ArtistTopic',
         blank=True,
         null=True,
-        )'''
+        )
 
     # To do: Make Artist inherit metadata from any tracks
     # belonging to it, and vice-versa.
@@ -115,6 +115,7 @@ class Track(models.Model):
         Artist,
         blank=True,
         null=True,
+        related_name='tracks'
         )
 
     #TODO: Update appropriate track info on artist set.
@@ -143,13 +144,13 @@ class Track(models.Model):
         null=True,
         )
     
-    '''genres = models.ManyToManyField(
+    genres = models.ManyToManyField(
         Genre,
         through='TrackGenre',
         blank=True,
         null=True,
-        )# Maybe make this a list? Genre distribution as well?
-'''
+        )
+        
     STATUS = (
         ('I', 'Included'), #included in current topic analysis.
         ('C', 'Confirmed'), #track info is confirmed, but not analyzed.
@@ -164,13 +165,13 @@ class Track(models.Model):
         blank=True,
         )
     
-    '''topics = models.ManyToManyField(
+    topics = models.ManyToManyField(
         Topic,
         verbose_name = 'topic makeup for each track.',
         through = 'TrackTopic',
         blank=True,
         null=True,
-        )'''
+        )
     
     def __unicode__(self):
         return self.name
@@ -178,9 +179,11 @@ class Track(models.Model):
 class TopicWord(models.Model):
     topic = models.ForeignKey(Topic)
     word = models.ForeignKey(Word)
-    position = models.IntegerField() # TODO: Restrict Integers to 
+    position = models.IntegerField()
+    count = models.IntegerField()
+    # TODO: Restrict Integers to 
     # a certain number, ensure there are no redundant positions 
-    # for a given topic.
+    # for a given topic
 
 class TrackTopic(models.Model):
     track = models.ForeignKey(Track)

@@ -7,6 +7,7 @@ from inferencer.models import Word, Genre, Topic, Artist, Track
 #ModelSerializer: For when your Serializer closely matches
 #that of one of your models.
 class WordSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Word
 
@@ -22,8 +23,14 @@ class TopicSerializer(serializers.ModelSerializer):
         model = Topic
 
 class ArtistSerializer(serializers.ModelSerializer):
+    tracks = serializers.RelatedField(many=True)
+
     class Meta:
         model = Artist
+        fields=(
+            'name', 'years_active_start', 'years_active_end',
+            'region_cluster', 'longitude', 'latitude', 'tracks','genres'
+            )
 
     def restore_object(self, attrs, instance=None):
         """
@@ -44,8 +51,14 @@ class ArtistSerializer(serializers.ModelSerializer):
             instance.region_cluster = attrs.get('region_cluster', instance.region_cluster)
             instance.longitude = attrs.get('longitude', instance.longitude)
             instance.latitude = attrs.get('latitude', instance.latitude)
-            # TODO instance.genres #
-            # TODO instance.topics #
+            # TODO instance.genres
+            # TODO instance.topics
+
+            instance.tracks = attrs.get('tracks', instance.tracks)
+            
+            return instance
+
+        return Artist(**attrs)
 
 class TrackSerializer(serializers.ModelSerializer):
     # Note: should use RelatedField, or something, (see
@@ -69,6 +82,8 @@ class TrackSerializer(serializers.ModelSerializer):
             # if no key is found.
             instance.name = attrs.get('name', instance.name)
             #instance.artist, TODO
+            instance.artist = attrs.get('artist', instance.artist)
+
             instance.year_released = attrs.get('year_released', instance.year_released)
             instance.region_cluster = attrs.get('region_cluster', instance.region_cluster)
             instance.longitude = attrs.get('longitude', instance.longitude)
@@ -76,5 +91,6 @@ class TrackSerializer(serializers.ModelSerializer):
             #TODO instance.genres TODO
             instance.track_status = attrs.get('track_status', instance.track_status)
             #instance.topics TODO
+            return instance
 
         return Track(**attrs)
