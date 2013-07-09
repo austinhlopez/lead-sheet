@@ -9,30 +9,16 @@ from django.test import TestCase
 
 from django.test.client import RequestFactory
 
-from inferencer.models import Word, Genre, Topic, Artist, Track
+from inferencer.models import *
+from inferencer.views import *
 
 ###################  Word Tests ##########################
 
-#class WordModelTests(TestCase):  
-    #TODO: Move functions in test_create to check whether 
-    #special cases (i.e., a space in Word.name) are handled 
-    #correctly.
-''' # name has space in it. Do not create. Resulting object 
-        # list should still have count 0.
-        Word.objects.create(name='glop py', count=0)
-        response = ListWordView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 0)
-        
-        # negative count. Do not create/throw error.
-        Word.objects.create(name='Gliffy', count=-1)
-        response = ListWordView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 0)'''
 
-"""NOTE: Unit testing is super important. Which tests should be in place?"""
-
-
-# These tests only make sure that ListWordView correctly
-# lists all of the words that have been added thus far.
+# These tests only make sure that ListordView correctly
+# lists all of the words that have been added thus far. It
+# does NOTE test that inputs are protected from inappropriate 
+# values.
 class WordListTests(TestCase):
     """Word list view tests"""
     # What kind of tests do I need to make when adding words?
@@ -45,82 +31,88 @@ class WordListTests(TestCase):
         factory = RequestFactory()
         request = factory.get('/')
 
+        desired_count = 0
+
         # Is this word properly displayed?
         Word.objects.create(name="bird", count=300)
-        response = ListWordView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 1)
-        
+        response = WordList.as_view()(request)
+        desired_count += 1
 
+        self.assertEquals(response.data['count'], desired_count)
+        
 #################### Artist Tests ########################
-
-#class ArtistModelTests(TestCase):
-    # What kind of limits on artist variables should I consider?
-    # (Look up typical testing procedures)
-    
-    # Make sure Artist name
-    # Doesn't PREVENT spaces.
-'''def test_artists_in_context(self):
-        factory = RequestFactory()
-        request = factory.get('/')
-
-        # name has space in it. Do not create. Resulting object 
-        # list should still have count 0.
-        Artist.objects.create()
-        response = ListWordView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 0)
-        
-        # negative count. Do not create/throw error.
-        Word.objects.create(name='Gliffy', count=-1)
-        response = ListWordView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 0)    '''
-
-
-class ListArtistView(TestCase):
+class ArtistListTests(TestCase):
     def test_artists_in_context(self):
         factory = RequestFactory()
-        request = factory.get('/')
+        request = factory.get('/artists/')
 
-        # Is this word properly displayed?
+        desired_count = 0
+
+        # Create an artist with just a name.
         Artist.objects.create(name="Sly & The Family Stone")
-        response = ListArtistView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 1)
-#################### Genre Tests ##########################
+        desired_count += 1
+        
+        response = ArtistList.as_view()(request)
 
-#class GenreModelTests(TestCase):
-    
+        self.assertEquals(response.data['count'], desired_count)
 
-class ListGenreView(TestCase):
+        # Add another artist, this time with more attributes.
+        Artist.objects.create(name="Led Zeppelin", 
+                              years_active_start=1969, 
+                              years_active_end=1979, 
+                              region_cluster=1, 
+                              longitude=123.12,
+                              latitude=68,
+                              )
+        desired_count += 1
+        response = ArtistList.as_view()(request)
+        self.assertEquals(response.data['count'], desired_count)
+
+# Still untested: Tagging genres for a given artist, etc.
+#################### Genre Tests ##########################    
+
+class GenreListTests(TestCase):
     def test_genres_in_context(self):
         factory = RequestFactory()
         request = factory.get('/')
 
+        desired_count = 0
+
         # Is this word properly displayed?
-        Genre.objects.create(name="Horrorcore")
-        response = ListGenreView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 1)
-    
+        Genre.objects.create(name="horrorcore")
+        desired_count += 1
+        response = GenreList.as_view()(request)
+        self.assertEquals(response.data['count'], desired_count)
+
+
 #################### Topic Tests ##########################
 
 #class TopicModelTests(TestCase):
 
-class ListTopicView(TestCase):
+class TopicListTests(TestCase):
     def test_topics_in_context(self):
         factory = RequestFactory()
         request = factory.get('/')
 
+        desired_count = 0
+
         # Is this word properly displayed?
         Topic.objects.create(name="Food")
-        response = ListTopicView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 1)
+        response = TopicList.as_view()(request)
+        desired_count += 1
+        self.assertEquals(response.data['count'], desired_count)
 
 #################### Track Tests ##########################
 
-class TrackModelTests(TestCase):
+class TrackListTests(TestCase):
     def test_tracks_in_context(self):
         factory = RequestFactory()
         request = factory.get('/')
 
-        # Is this word properly displayed?
+        desired_count = 0
+
+        # Is this track properly displayed?
         Track.objects.create(name="Seven Nation Army")
-        response = ListTrackView.as_view()(request)
-        self.assertEquals(response.context_data['object_list'].count(), 1)
+        response = TrackList.as_view()(request)
+        desired_count += 1
+        self.assertEquals(response.data['count'], desired_count)

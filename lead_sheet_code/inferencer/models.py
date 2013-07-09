@@ -8,7 +8,6 @@ class Word(models.Model):
         )
     
     count = models.IntegerField(
-        verbose_name="Total count of this word within the dataset.",
         )
 
     def __unicode__(self):
@@ -41,7 +40,6 @@ class Topic(models.Model):
 
     topic_words = models.ManyToManyField(
         Word, 
-        verbose_name="List of the top words for a given topic",
         through='TopicWord',
         )
 
@@ -99,7 +97,6 @@ class Artist(models.Model):
     
     topics = models.ManyToManyField(
         Topic,
-        verbose_name = 'topic makeup for this artist.',
         through = 'ArtistTopic',
         blank=True,
         null=True,
@@ -165,15 +162,13 @@ class Track(models.Model):
 
     track_status = models.CharField(
         max_length = 1,
-        verbose_name = "Has the track been included in the analysis?",
         choices=STATUS,
-        default=('U', 'Unverified'),
+        default='U',
         blank=True,
         )
     
     topics = models.ManyToManyField(
         Topic,
-        verbose_name = 'topic makeup for each track.',
         through = 'TrackTopic',
         blank=True,
         null=True,
@@ -188,8 +183,14 @@ class Track(models.Model):
 class TopicWord(models.Model):
     topic = models.ForeignKey(Topic)
     word = models.ForeignKey(Word)
-    position = models.IntegerField()
-    count = models.IntegerField()
+    position = models.IntegerField(
+        blank=True,
+        null=True
+        )
+    count = models.IntegerField(
+        blank=True,
+        null=True
+        )
     # TODO: Restrict Integers to 
     # a certain number, ensure there are no redundant positions 
     # for a given topic
@@ -205,6 +206,8 @@ class TrackTopic(models.Model):
         decimal_places=3,
         max_digits=3,
         verbose_name='What percentage of the overall topic makeup is comprised by this topic?',
+        blank=True,
+        null=True,
         )
     
     class Meta:
@@ -219,6 +222,8 @@ class ArtistTopic(models.Model):
         decimal_places=3,
         max_digits=3,
         verbose_name='What percentage of the overall topic makeup is comprised by this topic?',
+        blank=True,
+        null=True,
         )
     
     class Meta:
@@ -229,6 +234,8 @@ class TrackGenre(models.Model):
     genre = models.ForeignKey(Genre)
 
     genre_position = models.IntegerField(
+        blank=True,
+        null=True,
         verbose_name="Is this the primary genre listing?",
         )
 
@@ -240,6 +247,8 @@ class ArtistGenre(models.Model):
     genre = models.ForeignKey(Genre)
 
     genre_position = models.IntegerField(
+        blank=True,
+        null=True,
         verbose_name="Is this the primary genre listing?",
         )
 
