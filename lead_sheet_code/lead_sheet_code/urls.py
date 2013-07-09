@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+
 from inferencer import views
 
 # Uncomment the next two lines to enable the admin:
@@ -6,7 +7,7 @@ from inferencer import views
 # admin.autodiscover()
 
 urlpatterns = patterns(
-    '',
+    'inferencer.views',
     # Examples:
     # url(r'^$', 'lead_sheet_code.views.home', name='home'),
     # url(r'^lead_sheet_code/', include('lead_sheet_code.foo.urls')),
@@ -18,15 +19,57 @@ urlpatterns = patterns(
     # url(r'^admin/', include(admin.site.urls)),
 
     # List url's
-    url(r'^words/$', views.WordList.as_view()),
+    url(r'^$', 'api_root'),
+
+    url(r'^words/$', 
+        views.WordList.as_view(),
+        name='word-list'),
     
-    url(r'^artists/$', views.ArtistList.as_view()),
-    url(r'^artists/(?P<pk>[0-9]+)/$', views.ArtistDetail.as_view()),
+    url(r'^artists/$', 
+        views.ArtistList.as_view(),
+        name='artist-list'),
+    url(r'^artists/(?P<pk>[0-9]+)/$',
+        views.ArtistDetail.as_view(),
+        name='artist-detail'),
 
-    url(r'^genres/$', views.GenreList.as_view()),
+    url(r'^genres/$', 
+        views.GenreList.as_view(),
+        name='genre-list'),
+    url(r'^genres/(?P<pk>[0-9]+)/$', 
+        views.GenreDetail.as_view(),
+        name='genre-detail'),
 
-    url(r'^topics/$', views.TopicList.as_view()),
+    url(r'^topics/$', 
+        views.TopicList.as_view(),
+        name='topic-list'),
+    url(r'^topics/(?P<pk>[0-9]+)$', 
+        views.TopicDetail.as_view(),
+        name='topic-detail'),
 
-    url(r'tracks/$', views.TrackList.as_view()),
-    url(r'^tracks/(?P<pk>[0-9]+)/$', views.TrackDetail.as_view()),
+    url(r'^tracks/$', 
+        views.TrackList.as_view(),
+        name='track-list'),
+    url(r'^tracks/(?P<pk>[0-9]+)/$', 
+        views.TrackDetail.as_view(),
+        name='track-detail'),
+
+    url(r'^topic-words/$', 
+        views.TopicWordList.as_view(),
+        name='topic-word-list'),
+
+    url(r'^track-topics/$', 
+        views.TrackTopicList.as_view(),
+        name='track-topic-list'),
+    
+    url(r'^artist-topics/$',
+        views.ArtistTopicList.as_view(),
+        name='artist-topic-list'),
+
+    url(r'^track-genres/$', 
+        views.TrackGenreList.as_view(),
+        name='track-genre-list'),
+
+    url(r'^artist-genres/$', 
+        views.ArtistGenreList.as_view(),
+        name='artist-genre-list'),
 )

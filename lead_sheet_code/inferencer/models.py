@@ -21,6 +21,11 @@ class Genre(models.Model):
         unique=True,
         max_length=60,
         )
+
+    # In the future, I should create some sort of system 
+    # for describing genre hierarchies/relationships.
+    # A slider, to specify 'specificness' of a genre 
+    # designation.
                                     
     def __unicode__(self):
         return self.name
@@ -34,7 +39,7 @@ class Topic(models.Model):
         unique=True
     ) #Note: name can be added after the fact
 
-    top_words = models.ManyToManyField(
+    topic_words = models.ManyToManyField(
         Word, 
         verbose_name="List of the top words for a given topic",
         through='TopicWord',
