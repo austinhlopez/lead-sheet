@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from inferencer.models import Word, Genre, Topic, Artist, Track, TopicWord, TrackTopic, ArtistTopic, TrackGenre, ArtistGenre
+from inferencer.models import Word, Genre, Topic, Artist, Track, TopicWord, TrackTopic, ArtistTopic, ArtistGenre
 
 # Code largely taken from Django REST framework tutorial.
 
@@ -151,23 +151,6 @@ class ArtistTopicSerializer(serializers.ModelSerializer):
             return instance
 
         return ArtistTopic(**attrs)
-
-class TrackGenreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TrackGenre
-
-    def restore_object(self, attrs, instance=None):
-        """
-        Create or update a TrackTopic, given a dictionary 
-        of deserialized field values."""
-
-        if instance:
-            instance.track = attrs.get('track', instance.track)
-            instance.genre = attrs.get('genre', instance.genre)
-            instance.genre_position = attrs.get('genre_position', instance.genre_position)
-            return instance
-
-        return TrackGenre(**attrs)
 
 class ArtistGenreSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,6 +1,10 @@
 bin/
 local/
 lib/
+fixtures/
 *~
 *.pyc
+*.json
+*.jpeg
+*.jpg
 todo

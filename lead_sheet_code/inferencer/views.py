@@ -1,7 +1,10 @@
 # Create your views here.
-from inferencer.models import Word, Artist, Genre, Topic, Track, TopicWord, TrackTopic, ArtistTopic, TrackGenre, ArtistGenre
+from inferencer.models import Word, Artist, Genre, Topic, Track, TopicWord, TrackTopic, ArtistTopic, ArtistGenre
 
-from inferencer.serializers import ArtistSerializer, TrackSerializer, WordSerializer, GenreSerializer, TopicSerializer, TopicWordSerializer, TrackTopicSerializer, ArtistTopicSerializer, TrackGenreSerializer, ArtistGenreSerializer
+from inferencer.serializers import ArtistSerializer, TrackSerializer, WordSerializer, GenreSerializer, TopicSerializer, TopicWordSerializer, TrackTopicSerializer, ArtistTopicSerializer, ArtistGenreSerializer
+
+from django.views.generic import View
+from django.views.generic import TemplateView
 
 from rest_framework import generics
 from rest_framework import renderers
@@ -22,7 +25,6 @@ def api_root(request, format=None):
             'topic-words': reverse('topic-word-list', request=request, format=format),
             'track-topics': reverse('track-topic-list', request=request, format=format),
             'artist-topics': reverse('artist-topic-list', request=request, format=format),
-            'track-genres': reverse('track-genre-list', request=request, format=format),
             'artist-genres': reverse('artist-genre-list', request=request, format=format)
             })
 
@@ -30,6 +32,13 @@ def api_root(request, format=None):
 # and things so that creation/
 # destruction/updating the API
 # is ADMIN ONLY.
+
+####### Home View #########
+class Home(TemplateView):
+    """
+    The View you see on arriving to the website.
+    """
+    template_name = 'home.html'
 
 ######## Word Views #########
 
@@ -140,15 +149,6 @@ class ArtistTopicList(generics.ListCreateAPIView):
     """
     queryset = ArtistTopic.objects.all()
     serializer_class = ArtistTopicSerializer
-    paginate_by = 100
-
-######## TrackGenre Views ###########
-class TrackGenreList(generics.ListCreateAPIView):
-    """
-    List all TrackGenre relations, or create a new one.
-    """
-    queryset = TrackGenre.objects.all()
-    serializer_class = TrackGenreSerializer
     paginate_by = 100
 
 ######## ArtistGenre Views ###########

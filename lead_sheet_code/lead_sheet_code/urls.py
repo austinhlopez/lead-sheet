@@ -19,7 +19,11 @@ urlpatterns = patterns(
     # url(r'^admin/', include(admin.site.urls)),
 
     # List url's
-    url(r'^$', 'api_root'),
+    url(r'^$', views.Home.as_view(), name='home'),
+    url(r'^api$', 'api_root'),
+
+    #Search
+    url(r'^search/', include('haystack.urls')),
 
     url(r'^words/$', 
         views.WordList.as_view(),
@@ -64,10 +68,6 @@ urlpatterns = patterns(
     url(r'^artist-topics/$',
         views.ArtistTopicList.as_view(),
         name='artist-topic-list'),
-
-    url(r'^track-genres/$', 
-        views.TrackGenreList.as_view(),
-        name='track-genre-list'),
 
     url(r'^artist-genres/$', 
         views.ArtistGenreList.as_view(),

@@ -18,9 +18,12 @@ class Genre(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(
         unique=True,
-        max_length=60,
+        max_length=120,
         )
 
+    # Number of tracks associated with this tag.
+    count = models.IntegerField(
+        )
     # In the future, I should create some sort of system 
     # for describing genre hierarchies/relationships.
     # A slider, to specify 'specificness' of a genre 
@@ -35,7 +38,10 @@ class Topic(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(
         max_length=255,
-        unique=True
+        unique=True,
+        blank=True,
+        null=True,
+        default="",
     ) #Note: name can be added after the fact
 
     topic_words = models.ManyToManyField(
@@ -51,11 +57,18 @@ class Artist(models.Model):
         primary_key=True, 
         unique=True,
         )
+    
     name = models.CharField(
-        unique=True,
         max_length=255,
         )
 
+    msd_id = models.CharField(
+        unique=True,
+        max_length=30,
+        blank = True,
+        null = True,
+        default = None,
+        )
     #TODO: Set this up to inherit any appropriate
     #info from track.
 
@@ -69,6 +82,8 @@ class Artist(models.Model):
         null=True,
         )
     
+    # TODO: Replace region_cluster with a Region model.
+    # Allow naming of certain region, etc. etc.
     region_cluster = models.IntegerField(
         blank=True,
         null=True,
@@ -84,6 +99,12 @@ class Artist(models.Model):
     latitude = models.DecimalField(
         decimal_places=2,
         max_digits=5,
+        null=True,
+        blank=True,
+        )
+
+    location = models.CharField(
+        max_length=100,
         null=True,
         blank=True,
         )
@@ -107,12 +128,22 @@ class Artist(models.Model):
     def __unicode__(self):
         return self.name
 
+#TODO: Include MSD track_id as a field. Goes for artist, too.
 class Track(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     
     name = models.CharField(
         max_length=255,
     )
+
+    #What is the ACTUAL length of these id's?
+    msd_id = models.CharField(
+        max_length=30,
+        unique = True,
+        blank = True,
+        null = True,
+        default = None,
+        )
 
     artist = models.ForeignKey(
         Artist,
@@ -127,33 +158,7 @@ class Track(models.Model):
         blank=True,
         null=True,
         )
-    
-    region_cluster = models.IntegerField(
-        blank=True,
-        null=True,
-        )
-    
-    longitude = models.DecimalField(
-        decimal_places=2,
-        max_digits=5,
-        blank=True,
-        null=True,
-        )
-    
-    latitude = models.DecimalField(
-        decimal_places=2,
-        max_digits=5,
-        blank=True,
-        null=True,
-        )
-    
-    genres = models.ManyToManyField(
-        Genre,
-        through='TrackGenre',
-        blank=True,
-        null=True,
-        )
-        
+                
     STATUS = (
         ('I', 'Included'), #included in current topic analysis.
         ('C', 'Confirmed'), #track info is confirmed, but not analyzed.
@@ -229,22 +234,9 @@ class ArtistTopic(models.Model):
     class Meta:
         unique_together = ("artist", "topic")
 
-class TrackGenre(models.Model):
-    track = models.ForeignKey(Track)
-    genre = models.ForeignKey(Genre)
-
-    genre_position = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name="Is this the primary genre listing?",
-        )
-
-    class Meta:
-        unique_together = ("track", "genre")
-
 class ArtistGenre(models.Model):
     artist = models.ForeignKey(Artist)
-    genre = models.ForeignKey(Genre)
+    genre = models.ForeignKey(Genre, to_field='name', max_length=120)
 
     genre_position = models.IntegerField(
         blank=True,

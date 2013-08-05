@@ -8,14 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Removing unique constraint on 'Track', fields ['name']
-        db.delete_unique(u'inferencer_track', ['name'])
 
+        # Changing field 'Topic.name'
+        db.alter_column(u'inferencer_topic', 'name', self.gf('django.db.models.fields.CharField')(max_length=255, unique=True, null=True))
 
     def backwards(self, orm):
-        # Adding unique constraint on 'Track', fields ['name']
-        db.create_unique(u'inferencer_track', ['name'])
 
+        # Changing field 'Topic.name'
+        db.alter_column(u'inferencer_topic', 'name', self.gf('django.db.models.fields.CharField')(default='', max_length=255, unique=True))
 
     models = {
         u'inferencer.artist': {
@@ -23,8 +23,10 @@ class Migration(SchemaMigration):
             'genres': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['inferencer.Genre']", 'null': 'True', 'through': u"orm['inferencer.ArtistGenre']", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'unique': 'True', 'primary_key': 'True'}),
             'latitude': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '5', 'decimal_places': '2', 'blank': 'True'}),
+            'location': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'longitude': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '5', 'decimal_places': '2', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'msd_id': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '30', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'region_cluster': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'topics': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['inferencer.Topic']", 'null': 'True', 'through': u"orm['inferencer.ArtistTopic']", 'blank': 'True'}),
             'years_active_end': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -33,7 +35,7 @@ class Migration(SchemaMigration):
         u'inferencer.artistgenre': {
             'Meta': {'unique_together': "(('artist', 'genre'),)", 'object_name': 'ArtistGenre'},
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inferencer.Artist']"}),
-            'genre': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inferencer.Genre']"}),
+            'genre': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inferencer.Genre']", 'to_field': "'name'", 'max_length': '120'}),
             'genre_position': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
@@ -46,13 +48,14 @@ class Migration(SchemaMigration):
         },
         u'inferencer.genre': {
             'Meta': {'object_name': 'Genre'},
+            'count': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'unique': 'True', 'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '60'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '120'})
         },
         u'inferencer.topic': {
             'Meta': {'object_name': 'Topic'},
             'id': ('django.db.models.fields.AutoField', [], {'unique': 'True', 'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'name': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'topic_words': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['inferencer.Word']", 'through': u"orm['inferencer.TopicWord']", 'symmetrical': 'False'})
         },
         u'inferencer.topicword': {
@@ -66,22 +69,12 @@ class Migration(SchemaMigration):
         u'inferencer.track': {
             'Meta': {'unique_together': "(('name', 'artist'),)", 'object_name': 'Track'},
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'tracks'", 'null': 'True', 'to': u"orm['inferencer.Artist']"}),
-            'genres': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['inferencer.Genre']", 'null': 'True', 'through': u"orm['inferencer.TrackGenre']", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'unique': 'True', 'primary_key': 'True'}),
-            'latitude': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '5', 'decimal_places': '2', 'blank': 'True'}),
-            'longitude': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '5', 'decimal_places': '2', 'blank': 'True'}),
+            'msd_id': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '30', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'region_cluster': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'topics': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['inferencer.Topic']", 'null': 'True', 'through': u"orm['inferencer.TrackTopic']", 'blank': 'True'}),
-            'track_status': ('django.db.models.fields.CharField', [], {'default': "('U', 'Unverified')", 'max_length': '1', 'blank': 'True'}),
+            'track_status': ('django.db.models.fields.CharField', [], {'default': "'U'", 'max_length': '1', 'blank': 'True'}),
             'year_released': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
-        },
-        u'inferencer.trackgenre': {
-            'Meta': {'unique_together': "(('track', 'genre'),)", 'object_name': 'TrackGenre'},
-            'genre': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inferencer.Genre']"}),
-            'genre_position': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'track': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inferencer.Track']"})
         },
         u'inferencer.tracktopic': {
             'Meta': {'unique_together': "(('track', 'topic'),)", 'object_name': 'TrackTopic'},
