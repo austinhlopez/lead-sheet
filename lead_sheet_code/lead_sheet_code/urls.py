@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from haystack.views import SearchView
 
 from inferencer import views
 
@@ -19,11 +20,10 @@ urlpatterns = patterns(
     # url(r'^admin/', include(admin.site.urls)),
 
     # List url's
-    url(r'^$', views.Home.as_view(), name='home'),
+    url(r'^$', 
+        SearchView(template="home.html"),
+        name="home"),
     url(r'^api$', 'api_root'),
-
-    #Search
-    url(r'^search/', include('haystack.urls')),
 
     url(r'^words/$', 
         views.WordList.as_view(),
