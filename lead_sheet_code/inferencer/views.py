@@ -69,6 +69,10 @@ class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
 
+class ArtistStats(TemplateView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
     #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
 ######## Genre Views #########
 
@@ -123,6 +127,10 @@ class TrackDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
+
+class TrackStats(TemplateView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
 
 ######### TopicWord Views #########
 class TopicWordList(generics.ListCreateAPIView):

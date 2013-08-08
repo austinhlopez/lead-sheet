@@ -7,4 +7,5 @@ fixtures/
 *.json
 *.jpeg
 *.jpg
+lead_sheet_code/inferencer/static/js/*
 todo

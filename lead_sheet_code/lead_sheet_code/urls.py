@@ -21,7 +21,9 @@ urlpatterns = patterns(
 
     # List url's
     url(r'^$', 
-        SearchView(template="home.html"),
+        SearchView(
+            template="home.html",
+            results_per_page=10,),
         name="home"),
     url(r'^api$', 'api_root'),
 
@@ -35,6 +37,10 @@ urlpatterns = patterns(
     url(r'^artists/(?P<pk>[0-9]+)/$',
         views.ArtistDetail.as_view(),
         name='artist-detail'),
+    url(r'^artists/stats/(?P<pk>[0-9]+)/$',
+        views.ArtistStats.as_view(template_name = "artist_stats.html"),
+        name='artist-stats'),
+
 
     url(r'^genres/$', 
         views.GenreList.as_view(),
@@ -56,6 +62,9 @@ urlpatterns = patterns(
     url(r'^tracks/(?P<pk>[0-9]+)/$', 
         views.TrackDetail.as_view(),
         name='track-detail'),
+    url(r'^tracks/stats/(?P<pk>[0-9]+)/$',
+        views.TrackStats.as_view(template_name = "track_stats.html"),
+        name='track-stats'),
 
     url(r'^topic-words/$', 
         views.TopicWordList.as_view(),

@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     'rest_framework',
     #search functionality
     'haystack',
+    #good looks
+    'bootstrap',
 )
 
 HAYSTACK_CONNECTIONS = {
