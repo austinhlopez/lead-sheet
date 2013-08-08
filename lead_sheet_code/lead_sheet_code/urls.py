@@ -38,7 +38,7 @@ urlpatterns = patterns(
         views.ArtistDetail.as_view(),
         name='artist-detail'),
     url(r'^artists/stats/(?P<pk>[0-9]+)/$',
-        views.ArtistStats.as_view(template_name = "artist_stats.html"),
+        views.ArtistStats.as_view(),
         name='artist-stats'),
 
 
@@ -63,8 +63,8 @@ urlpatterns = patterns(
         views.TrackDetail.as_view(),
         name='track-detail'),
     url(r'^tracks/stats/(?P<pk>[0-9]+)/$',
-        views.TrackStats.as_view(template_name = "track_stats.html"),
-        name='track-stats'),
+        views.TrackStats.as_view(),
+         name='track-stats'),
 
     url(r'^topic-words/$', 
         views.TopicWordList.as_view(),

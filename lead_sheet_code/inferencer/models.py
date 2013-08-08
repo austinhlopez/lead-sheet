@@ -184,7 +184,25 @@ class Track(models.Model):
     
     def __unicode__(self):
         return self.name
-                                                                        
+                  
+    # Returns a list of topics, formatted to be used 
+    # in a highcharts piechart.
+    def get_topics_for_chart(self):
+        count = 0
+        
+        data_json = "data: ["
+
+        for tracktopic in self.tracktopic_set.all():
+            count += tracktopic.topic_proportion
+            formatted_element = "['%d', %0.2f],\n" % (tracktopic.topic.id, tracktopic.topic_proportion)
+            data_json += formatted_element
+            
+        
+        leftover = 1 - count
+        data_json += "['other', %0.2f]\n]" % leftover
+                              
+        return data_json
+
 class TopicWord(models.Model):
     topic = models.ForeignKey(Topic)
     word = models.ForeignKey(Word)

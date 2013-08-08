@@ -3,14 +3,14 @@ from inferencer.models import Word, Artist, Genre, Topic, Track, TopicWord, Trac
 
 from inferencer.serializers import ArtistSerializer, TrackSerializer, WordSerializer, GenreSerializer, TopicSerializer, TopicWordSerializer, TrackTopicSerializer, ArtistTopicSerializer, ArtistGenreSerializer
 
-from django.views.generic import View
-from django.views.generic import TemplateView
+from django.views.generic import View, DetailView, TemplateView
 
 from rest_framework import generics
 from rest_framework import renderers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response 
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 ######## API Endpoint #######
 
@@ -69,11 +69,11 @@ class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
 
-class ArtistStats(TemplateView):
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
+class ArtistStats(DetailView):
+    model = Artist 
+    template_name = "artist_stats.html"
 
-    #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
+#GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
 ######## Genre Views #########
 
 class GenreList(generics.ListCreateAPIView):
@@ -90,7 +90,6 @@ class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-
 
 ######## Topic Views #########
 
@@ -128,9 +127,11 @@ class TrackDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TrackSerializer
     #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
 
-class TrackStats(TemplateView):
-    queryset = Track.objects.all()
-    serializer_class = TrackSerializer
+class TrackStats(DetailView):
+    model = Track
+    template_name="track_stats.html"
+
+    
 
 ######### TopicWord Views #########
 class TopicWordList(generics.ListCreateAPIView):
