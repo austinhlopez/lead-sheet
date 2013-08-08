@@ -22,17 +22,21 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
 });
 
 // Build the chart
-        $('#track-stats-container').highcharts({
+        $('#track-pie').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             },
+            credits: {
+                enabled: false
+            },
             title: {
                 text: 'Topic Distribution for this Track'
             },
             tooltip: {
-    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+percentageDecimals: 1
             },
             plotOptions: {
                 pie: {
@@ -43,7 +47,7 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
                         color: '#000000',
                         connectorColor: '#000000',
                         formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage) +' %';
                         }
                     }
                 }
@@ -62,10 +66,19 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
 
   <body id="track-stats" class="artist-stats">
     {% block content %}
-    <div class="thing">
-      <p>{{track.get_topics_for_chart}}</p>
-    </div>
     <div class="container" id="track-stats-container">
+      <div class="row">
+      <div class="col-lg-5 col-lg-offset-1">
+        <div class="row pie-row" id="track-pie-row">
+          <div class="pie-container" id="track-pie-container">
+            <div class="pie" id="track-pie">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <p>{{ track.get_topicwords_for_chart }}</p>
+      </div>    
     </div>
     {% endblock %}
   </body>

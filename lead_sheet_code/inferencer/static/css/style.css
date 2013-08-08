@@ -27,6 +27,19 @@ div.search_container {
     margin:-15% 0 0 -25%;
 }
 
+div.pie-row {
+    min-height: 500px;
+    position: relative;
+}
+
+div.pie-container {
+    position: absolute;
+    top: 40%;
+    height: 25%;
+    width: 100%;
+    margin: -15% 0 0 -22%;
+}
+
 div.results_col {
     min-height: 500px;
     position: relative;

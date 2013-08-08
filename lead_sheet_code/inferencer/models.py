@@ -128,6 +128,43 @@ class Artist(models.Model):
     def __unicode__(self):
         return self.name
 
+    # Returns a list of topics, formatted to be used in 
+    # a highcharts piechart.
+    def get_topics_for_chart(self):
+        
+        # Keep track of track_count in order to normalize topic 
+        # distributions for each and incorporate them into the 
+        # total artist distribution.
+        track_count = 0
+        topic_dict = {}
+        for track in self.tracks.all():
+            track_count += 1
+            for tracktopic in track.tracktopic_set.all():
+                topic_id = tracktopic.topic.id
+                proportion = tracktopic.topic_proportion
+                if topic_id not in topic_dict.keys():
+                    topic_dict[topic_id] = proportion
+                else:
+                    topic_dict[topic_id] += proportion
+        # Normalize proportions in topic_dict by the number of
+        # total tracks considered, remove low-scoring tracks.
+                    
+        data_json = "data: ["
+                    
+        count = 0
+        for topic_id, proportion in topic_dict.iteritems():
+            new_proportion = proportion/track_count
+            topic_dict[topic_id] = new_proportion
+            count += topic_dict[topic_id]
+
+            formatted_element = "['%d', %0.2f],\n" % (topic_id, topic_dict[topic_id])
+            data_json += formatted_element
+        leftover = 1 - count
+        data_json += "['other', %0.2f]\n]" % leftover
+        
+        return data_json
+
+
 #TODO: Include MSD track_id as a field. Goes for artist, too.
 class Track(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -199,9 +236,17 @@ class Track(models.Model):
             
         
         leftover = 1 - count
-        data_json += "['other', %0.2f]\n]" % leftover
-                              
+        data_json += "['other', %0.2f]\n]" % leftover      
         return data_json
+
+    #This is probably the wrong place for this?
+    def get_topicwords_for_chart(self):
+        for tracktopic in self.tracktopic_set.all():
+            topic_id = tracktopic.topic.id
+            top_words_query = tracktopic.topic.topicword_set.all().filter(position__lte = 10)
+
+            return top_words_query
+                        
 
 class TopicWord(models.Model):
     topic = models.ForeignKey(Topic)

@@ -21,17 +21,21 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
 });
 
 // Build the chart
-        $('#artist-stats-container').highcharts({
+        $('#artist-pie').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             },
+            credits: {
+                enabled: false
+            },
             title: {
                 text: 'Topic Distribution for this Artist'
             },
             tooltip: {
-    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+percentageDecimals: 1
             },
             plotOptions: {
                 pie: {
@@ -42,27 +46,17 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
                         color: '#000000',
                         connectorColor: '#000000',
                         formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 1) +' %';
                         }
                     }
                 }
             },
             series: [{
                 type: 'pie',
-                name: 'Browser share',
-                data: [
-                    ['Firefox',   45.0],
-                    ['IE',       26.8],
-                    {
-                        name: 'Chrome',
-                        y: 12.8,
-                        sliced: true,
-                        selected: true
-                    },
-                    ['Safari',    8.5],
-                    ['Opera',     6.2],
-                    ['Others',   0.7]
-                ]
+                name: 'Topic Distribution',
+{% autoescape off %}
+{{ artist.get_topics_for_chart }}
+{% endautoescape %}
             }]
         });
     });
@@ -73,8 +67,20 @@ Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, 
     {% block content %}
     <div class="container" id="artist-stats-container">
       <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-          
+        <div class="col-lg-5 col-lg-offset-1">
+          <div class="row pie-row" id="artist-pie-row">
+            <div class="pie-container" id="artist-pie-container">
+              <div class="pie" id="artist-pie">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row topic-info-row" id="topic-info-row">
+            <div class="topic-info-container" id="topic-info-container">
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
