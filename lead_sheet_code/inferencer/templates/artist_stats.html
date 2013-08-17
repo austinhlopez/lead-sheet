@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
-    <script src="{% static "js/jquery-1.10.2.js" %}" type="text/javascript"></script>
-    <script src="{% static "js/highcharts/highcharts.js" %}" type="text/javascript"></script>
-    <script type="text/javascript">
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container" id="artist-stats-container">
+      <div class="row">
+        <div class="col-lg-5 col-lg-offset-1">          
+          <div class="row pie-row" id="artist-pie-row">
+            <div class="pie-container" id="artist-pie-container">
+              <div class="panel" id="artist-detail-panel">
+                {% include "partial_artist_detail.html" %}
+              </div>
+
+              <div class="pie" id="artist-pie">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row topic-info-row" id="topic-info-row">
+            <div class="topic-info-container" id="topic-info-container">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
 $(function () {
 
 // Radialize the colors
@@ -60,30 +80,5 @@ percentageDecimals: 1
             }]
         });
     });
-      </script>
-  </head>
-
-  <body id="artist_stats" class="artist-stats">
-    {% block content %}
-    <div class="container" id="artist-stats-container">
-      <div class="row">
-        <div class="col-lg-5 col-lg-offset-1">
-          <div class="row pie-row" id="artist-pie-row">
-            <div class="pie-container" id="artist-pie-container">
-              <div class="pie" id="artist-pie">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="row topic-info-row" id="topic-info-row">
-            <div class="topic-info-container" id="topic-info-container">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endblock %}
-  </body>
-</html>
+</script>
+{% endblock %}

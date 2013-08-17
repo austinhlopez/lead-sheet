@@ -62,12 +62,12 @@ class ArtistList(generics.ListCreateAPIView):
     serializer_class = ArtistSerializer
     paginate_by = 30
 
-class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
+class ArtistDetail(DetailView):
     """
     Retrieve, update or delete an artist instance.
     """
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
+    model = Artist
+    template_name = "artist_detail.html"
 
 class ArtistStats(DetailView):
     model = Artist 
@@ -119,13 +119,12 @@ class TrackList(generics.ListCreateAPIView):
     serializer_class = TrackSerializer
     paginate_by = 30
 
-class TrackDetail(generics.RetrieveUpdateDestroyAPIView):
+class TrackDetail(DetailView):
     """
     Retrieve, update or delete an artist instance.
     """
-    queryset = Track.objects.all()
-    serializer_class = TrackSerializer
-    #GET, PUT, POST, and DELETE handled in the RetrieveUpdate...etc view
+    model = Track 
+    template_name="track_detail.html"
 
 class TrackStats(DetailView):
     model = Track

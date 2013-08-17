@@ -1,0 +1,72 @@
+Long term plans:
+
+1) It would be cool to have a set of lyrics blocked over by different colors, representing different topics. I could even program 
+something with some algorithm to make sure similar looking colors are near one another. Similarly looking colors based on topic 
+similarity would be interesting. I need to remember algorithms on similarity for machine learning stuff.
+
+    What I'll need:
+    -Start a new app for django, something about the lyricgrabber.
+    -Access APIs as they're loaded, GET requests, maybe using the djangorestframework.
+    -Check if lyrics have been assigned to that song. If not, save the song in the server.
+    -There's got to be a script that runs through the lyrics, placing words in the appropriate 
+    -place. The good thing is: the words are assigned randomly, so it's not so bad if the 
+    actual position of the word is different. As long as every one word has the right number 
+    assigned to each topic, I can color them all I want. I really need to use the different colors 
+    of the topics to my advantage. Maybe I want whites and strong other colors, like the topic colors.
+    Bright Greens, Reds, Magentas, Yellow. But do I really want a rainbow metaphor with music? Or, it 
+    could be going towards the night party electronica sort of thing. Hmm...
+
+2) A logo? I just thought of one. Think of the consequence of sound record player. We need something a little 
+   different from that but it could be a record logo, something round, but a little abstracted, and have just 
+   slivers of rainbow color, like tree rings. That's a logo. That's got connotations of trees, family trees, etc., it's got 
+   a chart sort of look, and music too.
+
+   Maybe an application name. Something with theme or music implied. Or maybe something about a breakdown.
+
+3) I have to figure out a way of consolidating topics. The fact 
+   is, a lot of the same words show up in a bunch of topics, 
+   or there may be topics that split the difference.
+
+   This leaves a big question. Why have these big, abstracted, 
+   vague topics when there are real topics right here?
+         I guess the answer is in the extra data and extra 
+         relationships. Cross sections of genre + region. 
+
+  But there's something about going to a page and there being 
+  a bunch of broad topics, many of which may combine multiple 
+  themes into one. The top 10 words isn't enough. I'll need 
+  to show other words.
+
+  The big question for this whole project is: why an algorithm? 
+  what does that give us? It gives us data on things like: 
+    homogeneity of given topics. That's the start. They give us, 
+    with year markers and region markers 
+    (but not enough, until there's some sort of 
+    API/webscraper involved (wikipedia)), a way of visualizing the 
+    spread of certain topics.
+    -I need to ask Uncle Michael about that server.
+
+  Meaning this artist stuff is cool, but it's missing the point. 
+  Since this is a big algorithm, we need to have very cool 
+  views of topics in general, and very broad trends.
+
+  Also: One benefit to algorithmized topics is that, unlike tags, 
+  we make broad enough generalizations to allow ourselves to compare 
+  them in the big picture. And I still have some granularity 
+  as far as specific tags (though I originally removed single 
+  tags from consideration), and specific distributions of topics?
+
+
+  5) Topic co-occurrence. This is an issue that may help consolidate 
+  topics. If there was SOME WAY of clustering topics based on 
+  the co-occurrence of words. Maybe I could display these
+  multi-dimensionally. Just have a word, have a weight based on 
+  the frequency of the word in the topic, and adjust that weight 
+  depending on the relative similarity of the word's occurrence 
+  in that topic (normalized, of course, so that smaller topics 
+  get considered differently ((and of course single words can't 
+  be divided out of smaller topics when normalizing the weights. 
+  I wonder how that's going to work.))), compared to the standard 
+  deviation or something of another topic. I'm sure I could research
+  a more appropriate measure of similarity. Then, we could either 
+  suitable ways of splitting up topics. Pheeeew.

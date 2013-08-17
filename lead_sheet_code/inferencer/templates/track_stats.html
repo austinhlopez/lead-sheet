@@ -1,13 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load staticfiles %}
-    
-    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
-    <script src="{% static "js/jquery-1.10.2.js" %}" type="text/javascript"></script>
-    <script src="{% static "js/highcharts/highcharts.js" %}" type="text/javascript"></script>
-    <script type="text/javascript">
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" id="track-stats-container">
+  <div class="row">
+    <div class="col-lg-5 col-lg-offset-1">
+      <div class="row pie-row" id="track-pie-row">
+        <div class="pie-container" id="track-pie-container">
+          <div class="panel" id="track-detail-panel">
+            {% include "partial_track_detail.html" %}
+          </div>
+          <div class="pie" id="track-pie">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="lyic-container" ng-controller="lyricsCtrl">
+        <div class="lyric_box">
+          <p>{{ lyrics }}<p>
+          
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
+{% endblock %}
+  
+{% block js %}
+<script type="text/javascript">
 $(function () {
 
 // Radialize the colors
@@ -61,25 +81,5 @@ percentageDecimals: 1
 }]
         });
     });
-      </script>
-  </head>
-
-  <body id="track-stats" class="artist-stats">
-    {% block content %}
-    <div class="container" id="track-stats-container">
-      <div class="row">
-      <div class="col-lg-5 col-lg-offset-1">
-        <div class="row pie-row" id="track-pie-row">
-          <div class="pie-container" id="track-pie-container">
-            <div class="pie" id="track-pie">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <p>{{ track.get_topicwords_for_chart }}</p>
-      </div>    
-    </div>
-    {% endblock %}
-  </body>
-</html>
+</script>
+{% endblock %}

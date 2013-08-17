@@ -1,0 +1,17 @@
+<h2> {{ track.name }} </h3>
+<ul>
+  <li>Released in
+    {% if track.year_released != None and track.year_released != 0 %}
+    <b>{{ track.year_released }}</b>
+    {% else %}
+    <b>unkown</b>
+    {% endif %}
+  </li>
+
+</ul>
+by <h3> {{ track.artist }} </h3>
+
+{% comment %}
+TODO: Add this stuff, somehow.
+ <p>by {% include "partial_artist_detail.html" with artist=track.artist %}</p>
+{% endcomment %}

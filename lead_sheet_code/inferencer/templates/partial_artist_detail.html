@@ -1,0 +1,35 @@
+<h3> {{ artist.name }} </h3>
+
+<ul>
+  <li>
+  active from 
+  {% if years_active_start != None and years_active_start != 0 %}<b>{{ years_active_start }}</b>
+  {% else %}
+  <b>unkown</b>
+  {% endif %}
+  
+  to 
+  {% if years_active_end != None and years_active_end != 0 %}<b>{{ years_active_end }}</b>
+  {% else %}
+  <b>unkown</b>
+  {% endif %}
+  </li>
+
+  <li>
+  located in
+  {% if artist.location != "" %}
+  <b>{{ artist.location }}</b>
+  {% else %}
+  <b>unkown</b>
+  {% endif %}
+  </li>
+
+  <li>
+    {% if artist.latitude != None %}
+    latitude <b>{{ artist.latitude }}</b>, longitude <b>{{ artist.longitude }}</b>
+    {% else %}
+    latitude <b>unkown</b>, longitude <b>unkown</b>
+    {% endif %}
+  </li>
+</ul>
+

@@ -1,4 +1,0 @@
-<h1>Add Word</h1>
-
-<form action="{% url "word-new" %}" method="POST">
-  {% csrf_token %}
